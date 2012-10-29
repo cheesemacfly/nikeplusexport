@@ -39,7 +39,7 @@ class NikePlusPHP {
 	 * @param string $password your Nike password 
 	 */
 	public function __construct($username, $password) {
-		//$this->_login($username, $password);
+		$this->_login($username, $password);
 	}
 
 	/**
