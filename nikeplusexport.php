@@ -33,12 +33,12 @@ class NikePlusExport extends NikePlusPHP {
     
     /**
      * Returns an activity in GPX format
-     * @param type $activity
+     * @param activity $activity
      * @return string
      */
     public function toGPX($activity)
     {   
-        if(!$activity->gps) return NULL;
+        if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
         
         $startTime = new DateTime($activity->startTimeUtc, new DateTimeZone($activity->timeZoneId));
         
@@ -135,7 +135,7 @@ class NikePlusExport extends NikePlusPHP {
     
     /**
      * Returns an activity in TCX format
-     * @param type $activity
+     * @param activity $activity
      * @return string
      */
     public function toTCX($activity)
@@ -145,10 +145,10 @@ class NikePlusExport extends NikePlusPHP {
     
     /**
      * Calculates the distance in kilometers between 2 lat/lon points using haversine formula
-     * @param type $lat1
-     * @param type $lon1
-     * @param type $lat2
-     * @param type $lon2
+     * @param float $lat1
+     * @param float $lon1
+     * @param float $lat2
+     * @param float $lon2
      * @return float
      */
     private function _distanceKM($lat1, $lon1, $lat2, $lon2)
@@ -158,10 +158,10 @@ class NikePlusExport extends NikePlusPHP {
 
     /**
      * Calculates the distance in miles between 2 lat/lon points using harvesine formula
-     * @param type $lat1
-     * @param type $lon1
-     * @param type $lat2
-     * @param type $lon2
+     * @param float $lat1
+     * @param float $lon1
+     * @param float $lat2
+     * @param float $lon2
      * @return float
      */
     private function _distanceMILES($lat1, $lon1, $lat2, $lon2)
@@ -171,11 +171,11 @@ class NikePlusExport extends NikePlusPHP {
     
     /**
      * Calculates the distance between 2 lat/lon points using haversine formula
-     * @param type $radius
-     * @param type $lat1
-     * @param type $lon1
-     * @param type $lat2
-     * @param type $lon2
+     * @param float $radius
+     * @param float $lat1
+     * @param float $lon1
+     * @param float $lat2
+     * @param float $lon2
      * @return float
      */
     private function _distance($radius, $lat1, $lon1, $lat2, $lon2)
