@@ -38,13 +38,9 @@ class NikePlusExport extends NikePlusPHP {
      */
     public function toGPX($activity)
     {   
-        if(!$activity->activity->gps) return null;
+        if(!$activity->gps) return NULL;
         
-        $waypoints = $activity->activity->geo->waypoints;
-        $startTime = new DateTime($activity->activity->startTimeUtc, new DateTimeZone($activity->activity->timeZoneId));
-        $name = $activity->activity->name;
-        $description = isset($activity->activity->tags->note) ? $activity->activity->tags->note : $name;
-        $deviceType = $activity->activity->deviceType;
+        $startTime = new DateTime($activity->startTimeUtc, new DateTimeZone($activity->timeZoneId));
         
         //prepare GPX
         $xml = new XMLWriter();
@@ -61,8 +57,8 @@ class NikePlusExport extends NikePlusPHP {
 
         //metadata
         $xml->startElement('metadata');
-        $xml->writeElement('name', $name);
-        $xml->writeElement('desc', $description);
+        $xml->writeElement('name', $activity->name);
+        $xml->writeElement('desc', isset($activity->tags->note) ? $activity->tags->note : $activity->name);
         $xml->writeElement('time', date('Y-m-d\TH:i:s'));
         $xml->writeElement('link', 'https://bitbucket.org/cheesemacfly/nikeplusexport');
         
@@ -71,7 +67,7 @@ class NikePlusExport extends NikePlusPHP {
         $maxLat = self::MINLAT;
         $minLon = self::MAXLON;
         $maxLon = self::MINLON;
-        foreach($waypoints as $wp) {
+        foreach($activity->geo->waypoints as $wp) {
                 if($wp->lon > $maxLon) $maxLon = $wp->lon;
                 if($wp->lon < $minLon) $minLon = $wp->lon;
                 if($wp->lat > $maxLat) $maxLat = $wp->lat;
@@ -96,7 +92,7 @@ class NikePlusExport extends NikePlusPHP {
         $distance = 0;
         $lastLat = self::MINLAT - 1;
         $lastLon = self::MINLON - 1;
-        foreach($waypoints as $wp) {
+        foreach($activity->geo->waypoints as $wp) {
             $xml->startElement('trkpt');
             $xml->writeAttribute('lat', $wp->lat);
             $xml->writeAttribute('lon', $wp->lon);
@@ -107,8 +103,8 @@ class NikePlusExport extends NikePlusPHP {
                 $distance += self::_distanceKM($lastLat, $lastLon, $wp->lat, $wp->lon);
 
             //calculate the waypoint time            
-            $timeSpan = $activity->activity->duration / 1000;
-            foreach($activity->activity->history[1]->values as $index => $value)
+            $timeSpan = $activity->duration / 1000;
+            foreach($activity->history[1]->values as $index => $value)
             {
                 if($value >= $distance && $value > 0)
                 {
@@ -117,7 +113,7 @@ class NikePlusExport extends NikePlusPHP {
                 }
             }
             $xml->writeElement('time', gmdate('Y-m-d\TH:i:s', $startTime->getTimestamp() + round($timeSpan)));
-            $xml->writeElement('src', $deviceType);
+            $xml->writeElement('src', $activity->deviceType);
 
             $xml->endElement();//EO trkpt
 
@@ -144,7 +140,7 @@ class NikePlusExport extends NikePlusPHP {
      */
     public function toTCX($activity)
     {
-        return null;
+        return NULL;
     }
     
     /**
@@ -191,6 +187,6 @@ class NikePlusExport extends NikePlusPHP {
         
         $a = cos($lat2Deg) * cos($lat1Deg) * cos($lon1Deg - $lon2Deg) + sin($lat2Deg) * sin($lat1Deg);
         
-        return -1 <= $a && $a <= 1 ? ($radius * acos($a)) : null;
+        return -1 <= $a && $a <= 1 ? ($radius * acos($a)) : NULL;
     }
 }
