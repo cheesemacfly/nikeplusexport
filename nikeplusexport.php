@@ -37,7 +37,7 @@ class NikePlusExport extends NikePlusPHP {
      * @return string
      */
     public function toGPX($activity)
-    {   
+    {
         if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
         
         $startTime = new DateTime($activity->startTimeUtc, new DateTimeZone($activity->timeZoneId));
@@ -48,7 +48,7 @@ class NikePlusExport extends NikePlusPHP {
         $xml->setIndent(true);
         $xml->startDocument("1.0", "UTF-8");
 
-        $xml->startElement('gpx');  
+        $xml->startElement('gpx');
         $xml->writeAttribute('version', '1.1');
         $xml->writeAttribute('creator', 'NikePlusExport');
         $xml->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
@@ -79,16 +79,16 @@ class NikePlusExport extends NikePlusPHP {
         $xml->writeAttribute('maxlat', $maxLat);
         $xml->writeAttribute('minlat', $minLat);
         
-        $xml->endElement();//EO bounds        
+        $xml->endElement();//EO bounds
         $xml->endElement();//EO metadata
 
         //track
-        $xml->startElement('trk');    
+        $xml->startElement('trk');
         $xml->writeElement('name', 'trkName ' . time());
-        $xml->writeElement('type', 'Run');         
+        $xml->writeElement('type', 'Run');
 
         $xml->startElement('trkseg');
-                
+
         $distance = 0;
         $lastLat = self::MINLAT - 1;
         $lastLon = self::MINLON - 1;
@@ -102,7 +102,7 @@ class NikePlusExport extends NikePlusPHP {
             if($lastLat >= self::MINLAT && $lastLon >= self::MINLON)
                 $distance += self::_distanceKM($lastLat, $lastLon, $wp->lat, $wp->lon);
 
-            //calculate the waypoint time            
+            //calculate the waypoint time
             $timeSpan = $activity->duration / 1000;
             foreach($activity->history[1]->values as $index => $value)
             {
@@ -112,7 +112,7 @@ class NikePlusExport extends NikePlusPHP {
                     break;
                 }
             }
-            $xml->writeElement('time', gmdate('Y-m-d\TH:i:s', $startTime->getTimestamp() + round($timeSpan)));
+            $xml->writeElement('time', gmdate('Y-m-d\TH:i:s\Z', $startTime->getTimestamp() + round($timeSpan)));
             $xml->writeElement('src', $activity->deviceType);
 
             $xml->endElement();//EO trkpt
@@ -125,7 +125,7 @@ class NikePlusExport extends NikePlusPHP {
         $xml->endElement(); //EO trk
 
 
-        $xml->endElement(); //EO gpx       
+        $xml->endElement(); //EO gpx
 
 
         $xml->endDocument();
@@ -140,7 +140,85 @@ class NikePlusExport extends NikePlusPHP {
      */
     public function toTCX($activity)
     {
-        return NULL;
+        if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
+        
+        $startTime = new DateTime($activity->startTimeUtc, new DateTimeZone($activity->timeZoneId));
+        
+        //prepare TCX
+        $xml = new XMLWriter();
+        $xml->openMemory();
+        $xml->setIndent(true);
+        $xml->startDocument("1.0", "UTF-8");
+        
+        $xml->startElement('TrainingCenterDatabase');
+        $xml->writeAttribute('xsi:schemaLocation', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd');
+        $xml->writeAttribute('xmlns:ns5', 'http://www.garmin.com/xmlschemas/ActivityGoals/v1');
+        $xml->writeAttribute('xmlns:ns3', 'http://www.garmin.com/xmlschemas/ActivityExtension/v2');
+        $xml->writeAttribute('xmlns:ns2', 'http://www.garmin.com/xmlschemas/UserProfile/v2');
+        $xml->writeAttribute('xmlns', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2');
+        $xml->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+        $xml->writeAttribute('xmlns:ns4', 'http://www.garmin.com/xmlschemas/ProfileExtension/v1');
+        
+        $xml->startElement('Activities');        
+        $xml->startElement('Activity');
+        $xml->writeAttribute('Sport', strcasecmp($activity->activityType, "RUN") == 0 ? "Running" : "Other");
+        
+        $xml->writeElement('Id', $activity->activityId);
+        
+        $xml->startElement('Lap');
+        $xml->writeAttribute('StartTime', gmdate('Y-m-d\TH:i:s\Z', $startTime->getTimestamp()));        
+        $xml->writeElement('TotalTimeSeconds', $activity->duration / 1000);
+        //Total distance in meters
+        $xml->writeElement('DistanceMeters', $activity->distance * 1000);
+        $xml->writeElement('Calories', $activity->calories);
+        $xml->writeElement('Intensity', 'Active');
+        $xml->writeElement('TriggerMethod', 'Manual');
+        
+        $xml->startElement('Track');
+        
+        $distance = 0;
+        $lastLat = self::MINLAT - 1;
+        $lastLon = self::MINLON - 1;
+        foreach($activity->geo->waypoints as $wp) {
+            $xml->startElement('Trackpoint');
+                        
+            //get total distance done at this waypoint
+            if($lastLat >= self::MINLAT && $lastLon >= self::MINLON)
+                $distance += self::_distanceKM($lastLat, $lastLon, $wp->lat, $wp->lon);
+
+            //calculate the waypoint time
+            $timeSpan = $activity->duration / 1000;
+            foreach($activity->history[1]->values as $index => $value)
+            {
+                if($value >= $distance && $value > 0)
+                {
+                    $timeSpan = 10 * (($distance * $index) / $value);
+                    break;
+                }
+            }
+            $xml->writeElement('Time', gmdate('Y-m-d\TH:i:s\Z', $startTime->getTimestamp() + round($timeSpan)));  
+            
+            $xml->startElement('Position');          
+            $xml->writeElement('LatitudeDegrees', $wp->lat);
+            $xml->writeElement('LongitudeDegrees', $wp->lon);
+            $xml->endElement();//EO Position
+            
+            $xml->writeElement('AltitudeMeters', $wp->ele);
+
+            $xml->endElement();//EO Trackpoint
+
+            $lastLat = $wp->lat;
+            $lastLon = $wp->lon;
+        }        
+        $xml->endElement();//EO Track
+        $xml->endElement();//EO Lap        
+        $xml->endElement();//EO Activity
+        $xml->endElement();//EO Activities        
+        $xml->endElement();//EO TrainingCenterDatabase
+        
+        $xml->endDocument();
+            
+        return $xml->outputMemory();
     }
     
     /**
