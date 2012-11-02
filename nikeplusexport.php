@@ -84,7 +84,7 @@ class NikePlusExport extends NikePlusPHP {
 
         //track
         $xml->startElement('trk');
-        $xml->writeElement('name', 'trkName ' . time());
+        $xml->writeElement('name', $activity->activityId);
         $xml->writeElement('type', 'Run');
 
         $xml->startElement('trkseg');
