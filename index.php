@@ -25,7 +25,6 @@
             if(!is_null($tcxContent = $n->toTCX($activity)))
             {
                 file_put_contents($activity->activityId . '.tcx', $tcxContent);
-                break;
             }
         }
     }
