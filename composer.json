@@ -1,0 +1,20 @@
+{
+    "name": "ngpp/nikeplusexport",
+    "type": "library",
+    "description": "Export your Nike+ gps activities",
+    "keywords": ["gpx","tcx","json","nikeplus"],
+    "homepage": "https://bitbucket.org/cheesemacfly/nikeplusexport",
+    "authors": [
+        {
+            "name": "Nicolas Guelpa",
+            "email": "nicolas@guelpa.me",
+            "homepage": "http://nicolas.guelpa.me",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "ext-curl": "*",
+        "ext-json": "*"
+    }
+}
