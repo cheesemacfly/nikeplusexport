@@ -26,7 +26,7 @@ class NikePlusExport extends NikePlusPHP {
      * @param type $activity
      * @return string
      */
-    public function toJSON($activity)
+    public static function toJSON($activity)
     {
         return json_encode($activity);
     }
@@ -36,7 +36,7 @@ class NikePlusExport extends NikePlusPHP {
      * @param activity $activity
      * @return string
      */
-    public function toGPX($activity)
+    public static function toGPX($activity)
     {
         if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
         
@@ -138,7 +138,7 @@ class NikePlusExport extends NikePlusPHP {
      * @param activity $activity
      * @return string
      */
-    public function toTCX($activity)
+    public static function toTCX($activity)
     {
         if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
         
