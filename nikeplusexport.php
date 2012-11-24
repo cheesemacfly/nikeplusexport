@@ -229,7 +229,7 @@ class NikePlusExport extends NikePlusPHP {
      * @param float $lon2
      * @return float
      */
-    private function _distanceKM($lat1, $lon1, $lat2, $lon2)
+    private static function _distanceKM($lat1, $lon1, $lat2, $lon2)
     {
         return self::_distance(6371, $lat1, $lon1, $lat2, $lon2);
     }
@@ -242,7 +242,7 @@ class NikePlusExport extends NikePlusPHP {
      * @param float $lon2
      * @return float
      */
-    private function _distanceMILES($lat1, $lon1, $lat2, $lon2)
+    private static function _distanceMILES($lat1, $lon1, $lat2, $lon2)
     {
         return self::_distance(3959, $lat1, $lon1, $lat2, $lon2);
     }
@@ -256,7 +256,7 @@ class NikePlusExport extends NikePlusPHP {
      * @param float $lon2
      * @return float
      */
-    private function _distance($radius, $lat1, $lon1, $lat2, $lon2)
+    private static function _distance($radius, $lat1, $lon1, $lat2, $lon2)
     {
         $lat1Deg = deg2rad($lat1);
         $lon1Deg = deg2rad($lon1);
