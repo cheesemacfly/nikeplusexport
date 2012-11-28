@@ -79,9 +79,11 @@ class NikePlusPHP {
 		}
 		$header = implode(';', $string);
 		$this->_cookie = $header;
-		$this->loginCookies = json_decode($body);
-		$this->userId = $this->loginCookies->serviceResponse->body->User->screenName;
-		$this->allTime();
+                if(isset($this->loginCookies->serviceResponse->body->User))
+                {
+                    $this->loginCookies = json_decode($body);
+                    $this->userId = $this->loginCookies->serviceResponse->body->User->screenName;
+                }
 	}
 
 	/**
