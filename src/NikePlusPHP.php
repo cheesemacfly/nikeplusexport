@@ -1,4 +1,5 @@
 <?php
+namespace NGPP;
 
 /**
  * A PHP class that makes it easy to get your data from the Nike+ service 

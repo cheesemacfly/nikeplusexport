@@ -1,5 +1,5 @@
 <?php
-
+namespace NGPP;
 /**
  * A PHP class that makes it easy to get your gps data from the Nike+ service
  * 
@@ -10,8 +10,6 @@
  * @link https://bitbucket.org/cheesemacfly/nikeplusexport
  * @version 1.0
  */
-
-require_once 'nikeplusphp.4.5.php';
 
 class NikePlusExport extends NikePlusPHP {
     /**
