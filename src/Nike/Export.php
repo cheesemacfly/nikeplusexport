@@ -1,5 +1,5 @@
 <?php
-namespace NGPP;
+namespace Nike;
 /**
  * A PHP class that makes it easy to get your gps data from the Nike+ service
  * 
@@ -11,7 +11,7 @@ namespace NGPP;
  * @version 1.0
  */
 
-class NikePlusExport extends NikePlusPHP {
+class Export extends API {
     /**
      * max/min for longitude and latitude as defined here: http://www.topografix.com/GPX/1/1/
      */

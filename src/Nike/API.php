@@ -1,5 +1,5 @@
 <?php
-namespace NGPP;
+namespace Nike;
 
 /**
  * A PHP class that makes it easy to get your data from the Nike+ service 
@@ -19,7 +19,7 @@ namespace NGPP;
  * For more examples, visit: http://nikeplusphp.org/#examples
  */
 
-class NikePlusPHP {
+class API {
 
 	/**
 	 * Public variables
