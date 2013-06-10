@@ -27,7 +27,7 @@ Here's an example of code to export all your runs:
     #!php
     <?php
         //Creates the object
-        $n = new NikePlusExport($username, $password);
+        $n = new \Nike\Export($username, $password);
         foreach ($n->activities() as $activity)
         {
             if ($activity->gps)
