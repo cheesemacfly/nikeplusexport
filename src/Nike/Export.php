@@ -38,10 +38,10 @@ class Export extends API {
     {
         if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
         
-        $startTime = new DateTime($activity->startTimeUtc, new DateTimeZone($activity->timeZoneId));
+        $startTime = new \DateTime($activity->startTimeUtc, new \DateTimeZone($activity->timeZoneId));
         
         //prepare GPX
-        $xml = new XMLWriter();
+        $xml = new \XMLWriter();
         $xml->openMemory();
         $xml->setIndent(true);
         $xml->startDocument("1.0", "UTF-8");
@@ -140,10 +140,10 @@ class Export extends API {
     {
         if(!$activity->gps || empty($activity->geo->waypoints)) return NULL;
         
-        $startTime = new DateTime($activity->startTimeUtc, new DateTimeZone($activity->timeZoneId));
+        $startTime = new \DateTime($activity->startTimeUtc, new \DateTimeZone($activity->timeZoneId));
         
         //prepare TCX
-        $xml = new XMLWriter();
+        $xml = new \XMLWriter();
         $xml->openMemory();
         $xml->setIndent(true);
         $xml->startDocument("1.0", "UTF-8");
