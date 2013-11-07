@@ -3,7 +3,8 @@
     "type": "library",
     "description": "Export your Nike+ gps activities",
     "keywords": ["gpx","tcx","json","nikeplus"],
-    "homepage": "https://bitbucket.org/cheesemacfly/nikeplusexport",
+    "homepage": "https://github.com/cheesemacfly/nikeplusexport",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nicolas Guelpa",
