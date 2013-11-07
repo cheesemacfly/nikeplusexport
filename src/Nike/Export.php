@@ -7,7 +7,7 @@ namespace Nike;
  * You must have the nikeplusphp file located in the same directory.
  * 
  * @author Nicolas Guelpa - http://nicolas.guelpa.me
- * @link https://bitbucket.org/cheesemacfly/nikeplusexport
+ * @link https://github.com/cheesemacfly/nikeplusexport
  * @version 1.0
  */
 
@@ -58,7 +58,7 @@ class Export extends API {
         $xml->writeElement('name', $activity->name);
         $xml->writeElement('desc', isset($activity->tags->note) ? $activity->tags->note : $activity->name);
         $xml->writeElement('time', date('Y-m-d\TH:i:s'));
-        $xml->writeElement('link', 'https://bitbucket.org/cheesemacfly/nikeplusexport');
+        $xml->writeElement('link', 'https://github.com/cheesemacfly/nikeplusexport');
         
         //set min/max lat/lng
         $minLat = self::MAXLAT;
