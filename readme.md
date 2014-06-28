@@ -4,8 +4,6 @@ NikePlusExport is a script built to help you export your Nike+ gps activities.
 The script supports JSON, GPX and TCX as output formats.  
 This project has been mainly inspired by https://gist.github.com/3121560.
 
-You can find a live demo here: http://nicolas.guelpa.me/lab/nikeplusexport/
-
 **This script does NOT use the [nike+ api](http://developer.nike.com/) to retrieve the activites**
 
 ##Requirements##
