@@ -81,6 +81,11 @@ class API {
 		$header = implode(';', $string);
 		$this->_cookie = $header;
 		$this->loginCookies = json_decode($body);
+		
+		if( ! isset($this->loginCookies->serviceResponse->body->User)) {
+			throw new \Exception('Bad credentials');
+		}
+		
 		$this->userId = $this->loginCookies->serviceResponse->body->User->screenName;
 		$this->allTime();
 	}
