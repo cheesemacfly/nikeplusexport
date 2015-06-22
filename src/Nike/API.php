@@ -24,7 +24,7 @@ class API {
 	/**
 	 * Public variables
 	 */
-	public $loginCookies, $userId, $activities = false, $allTime = false, $routes = false;
+	public $loginCookies, $userId, $activities = array(), $allTime = false, $routes = false;
 
 	/**
 	 * Private variables
@@ -143,7 +143,7 @@ class API {
 			--$limit;
 		}
 		if($limit != count($this->activities) ||($checkTotal && ($this->activities && count($this->activities) < $this->allTime->lifetimeTotals->run))) {
-			$this->activities = false;
+			$this->activities = array();
 		}
 		if(!$this->activities) {
 			while($loop == true) {
