@@ -1,4 +1,6 @@
-##About##
+**This repo is not maintained and the script most likely doesn't work anymore since [Nike+PHP is dead](https://nikeplusphp.org/).**
+
+## About ##
 
 NikePlusExport is a script built to help you export your Nike+ gps activities.  
 The script supports JSON, GPX and TCX as output formats.  
@@ -6,19 +8,19 @@ This project has been mainly inspired by https://gist.github.com/3121560.
 
 **This script does NOT use the [nike+ api](http://developer.nike.com/) to retrieve the activites**
 
-##Requirements##
+## Requirements ##
 
 This script is based on the excellent Nike+PHP http://nikeplusphp.org/.  
 It has been successfully tested with nikeplusphp.4.5.php.  
 To run correctly, it needs PHP 5 with cURL and JSON.
 
-##Installation##
+## Installation ##
 
 Simply run, assuming you have installed composer.phar or composer binary:
 
     $ composer require ngpp/nikeplusexport
 
-##Examples##
+## Examples ##
 
 Here's an example of code to export all your runs:
 
@@ -50,7 +52,7 @@ Here's an example of code to export all your runs:
             }
         }
 
-##Information and contact##
+## Information and contact ##
 
 The script outputs respect the following implementations:
 
